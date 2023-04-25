@@ -36,20 +36,23 @@ def extractor(url):
         article: Raw Article Body
         article_title: Title of the Article that has been extracted
     """
-   
-    article = Article(url)
-
-    article.download()
-    article.parse()
     
+    article = Article(url)
+    article_title = ""
+    try:
+        article.download()
+        article.parse()
 
-    #Get the article title and convert them to lower-case
-    article_title = article.title
-    # print("--q1231")
-    # print(article_title)
-    # print(article)
-    article = article.text.lower()
-    article = [article]
+
+        #Get the article title and convert them to lower-case
+        article_title = article.title
+        # print("--q1231")
+        # print(article_title)
+        # print(article)
+        article = article.text.lower()
+        article = [article]
+    except:
+        pass
     return (article, article_title)
 
 
