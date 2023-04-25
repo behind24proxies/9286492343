@@ -37,18 +37,20 @@ def extractor(url):
     """
 
     article = Article(url)
-
-    article.download()
-    article.parse()
+    try:
+        article.download()
+        article.parse()
+        #Get the article title and convert them to lower-case
+        article_title = article.title
+        # print("--q1231")
+        # print(article_title)
+        # print(article)
+        article = article.text.lower()
+        article = [article]
+     except Exception as e:
+        article =""
+        print(e)
     
-
-    #Get the article title and convert them to lower-case
-    article_title = article.title
-    # print("--q1231")
-    # print(article_title)
-    # print(article)
-    article = article.text.lower()
-    article = [article]
     return (article, article_title)
 
 
@@ -83,8 +85,7 @@ def duckduckgo_search(title):
     # print(title)
     search_urls = []
     source_sites = []
-    # LP  
-    #  results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
+    # LP     
     # for result in results:
     # set up the date filter
     now = datetime.now()
