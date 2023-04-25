@@ -115,7 +115,7 @@ def duckduckgo_search(title):
             pass  
 
 
-    for result in results:
+    for result in filtered_results:
         if any(x in result["href"] for x in match):
         #if "https://balancednewssummary.com/" not in result["href"]:
             source_sites.append(result["title"])
