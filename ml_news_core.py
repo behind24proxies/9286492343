@@ -96,6 +96,9 @@ def duckduckgo_search(title):
     # search for articles published in the last week using DuckDuckGo
     
     results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
+    # set up the date filter for the last 7 days
+    end_date = datetime.today()
+    start_date = end_date - timedelta(days=7)
     # filter the results by date
     filtered_results = []
     for result in results:
