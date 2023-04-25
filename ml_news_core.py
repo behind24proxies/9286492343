@@ -37,22 +37,19 @@ def extractor(url):
     """
 
     article = Article(url)
-    article_title = article.title
-    try:
-        article.download()
-        article.parse()
-        #Get the article title and convert them to lower-case
-        
-        # print("--q1231")
-        # print(article_title)
-        # print(article)
-        article = article.text.lower()
-        article = [article]
-       
-     except:
-       pass
+
+    article.download()
+    article.parse()
     
-     return (article, article_title)
+
+    #Get the article title and convert them to lower-case
+    article_title = article.title
+    # print("--q1231")
+    # print(article_title)
+    # print(article)
+    article = article.text.lower()
+    article = [article]
+    return (article, article_title)
 
 
 def text_area_extractor(text):
