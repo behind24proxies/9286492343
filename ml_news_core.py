@@ -40,7 +40,7 @@ def extractor(url):
     user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
     config = Config()
     config.browser_user_agent = user_agent
-    article = Article(url, config)
+    article = Article(url)
 
     article.download()
     article.parse()
