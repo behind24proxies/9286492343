@@ -82,7 +82,7 @@ def google_search(title, url):
 
     # search for articles published in the last week using DuckDuckGo
     
-    results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10, date_filter=timeframe_str)
+    results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
     filtered_results = [result for result in results if start_date <= result.date <= end_date]
 
     for result in filtered_results:
