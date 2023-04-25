@@ -69,7 +69,16 @@ def google_search(title, url):
     print(title)
     search_urls = []
     source_sites = []
-    results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=25)
+    #     results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=25)
+    # set up the date filter
+    now = datetime.now()
+    timeframe = now - timedelta(days=7)
+    timeframe_str = timeframe.strftime("%Y-%m-%d")
+
+    # search for articles published in the last week using DuckDuckGo
+    query = "your query here"
+    results = ddg.search(title,region='wt-wt', safesearch='Moderate', max_results=10, date_filter=timeframe_str)
+
     for result in results:
         if "https://balancednewssummary.com/" not in result["href"]:
             source_sites.append(result["title"])
