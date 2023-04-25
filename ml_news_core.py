@@ -96,7 +96,21 @@ def duckduckgo_search(title):
     # search for articles published in the last week using DuckDuckGo
     
     results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
-    #     filtered_results = [result for result in results if start_date <= result.date <= end_date]
+    # filter the results by date
+    filtered_results = []
+    for result in results:
+        try:
+            # extract the publication date from the URL using a regular expression
+            date_str = re.search(r'\d{4}/\d{2}/\d{2}', result.href).group()
+            result_date = datetime.strptime(date_str, '%Y/%m/%d')
+
+            # add the result to the filtered list if its date is within the date range
+            if start_date <= result_date <= end_date:
+                filtered_results.append(result)
+        except (AttributeError, ValueError):
+            filtered_results.append(result)
+            pass  
+
 
     for result in results:
         if any(x in result["href"] for x in match):
