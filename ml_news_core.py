@@ -96,13 +96,15 @@ def duckduckgo_search(title):
     # search for articles published in the last week using DuckDuckGo
     
     results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
-    filtered_results = [result for result in results if start_date <= result.date <= end_date]
+    #     filtered_results = [result for result in results if start_date <= result.date <= end_date]
 
-    for result in filtered_results:
+    for result in results:
         if any(x in result["href"] for x in match):
         #if "https://balancednewssummary.com/" not in result["href"]:
             source_sites.append(result["title"])
             search_urls.append(result["href"])
+            print("result")
+            print(result)
     # for i in search(title, tld = "com", num = 10, start = 1, stop = 6):
     #     if "youtube" not in i and domain not in i:
     #         source_sites.append(urlparse(i).hostname)
