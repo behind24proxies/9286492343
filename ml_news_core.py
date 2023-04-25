@@ -6,6 +6,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.model_selection import train_test_split
 from duckduckgo_search import ddg
+# lp
+from datetime import datetime, timedelta
 import joblib
 from googlesearch import search
 from urllib.parse import urlparse
@@ -81,8 +83,22 @@ def duckduckgo_search(title):
     # print(title)
     search_urls = []
     source_sites = []
-    results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
-    for result in results:
+    # LP  
+    #  results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
+    # for result in results:
+    # set up the date filter
+    now = datetime.now()
+    timeframe = now - timedelta(days=7)
+    timeframe_str = timeframe.strftime("%Y-%m-%d")
+    end_date = datetime.today()
+    start_date = end_date - timedelta(days=7)
+
+    # search for articles published in the last week using DuckDuckGo
+    
+    results = ddg.search(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10, date_filter=timeframe_str)
+    filtered_results = [result for result in results if start_date <= result.date <= end_date]
+
+    for result in filtered_results:
         if any(x in result["href"] for x in match):
         #if "https://balancednewssummary.com/" not in result["href"]:
             source_sites.append(result["title"])
