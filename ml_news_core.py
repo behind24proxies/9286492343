@@ -1,6 +1,7 @@
 import warnings
 import re
 from newspaper import Article
+from newspaper import Config
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -25,7 +26,7 @@ match = df[0].to_list()
 def take(n, iterable):
     "Return first n items of the iterable as a list"
     return list(islice(iterable, n))
-
+    
 def extractor(url):
     """
     Extractor function that gets the article body from the URL
@@ -35,8 +36,11 @@ def extractor(url):
         article: Raw Article Body
         article_title: Title of the Article that has been extracted
     """
-
-    article = Article(url)
+    # Add Config
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
+    config = Config()
+    config.browser_user_agent = user_agent
+    article = Article(url, config=config)
 
     article.download()
     article.parse()
