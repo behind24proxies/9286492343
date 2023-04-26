@@ -85,7 +85,7 @@ def duckduckgo_search(title):
     # print(title)
     search_urls = []
     source_sites = []
-    if title != ""
+    if title != "":
         title = title.split(" – Balanced News Summary")[0]
         # print(title)
         
