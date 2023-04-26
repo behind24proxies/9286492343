@@ -47,8 +47,8 @@ def extractor(url):
         #Get the article title and convert them to lower-case
         article_title = article.title
         print("extractor")
-        print(article_title)
-        print(article)
+#         print(article_title)
+#         print(article)
         article = article.text.lower()
         article = [article]
     except:
@@ -155,8 +155,8 @@ def similarity(url_list, article):
         try: 
             test_article, test_title = extractor(i)
             print("similarity")
-            print(test_article)
-            print(test_title)
+#             print(test_article)
+#             print(test_title)
             test_article = [test_article]
             sim_transform2 = sim_tfv.transform(test_article[0])
             score = cosine_similarity(sim_transform1, sim_transform2)
