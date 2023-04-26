@@ -36,7 +36,7 @@ def extractor(url):
         article: Raw Article Body
         article_title: Title of the Article that has been extracted
     """
-    
+    print(url)
     article = Article(url)
     article_title = ""
     try:
@@ -46,9 +46,9 @@ def extractor(url):
 
         #Get the article title and convert them to lower-case
         article_title = article.title
-        # print("--q1231")
-        # print(article_title)
-        # print(article)
+        print("extractor")
+        print(article_title)
+        print(article)
         article = article.text.lower()
         article = [article]
     except:
@@ -83,52 +83,54 @@ def duckduckgo_search(title):
     # target = url
     # domain = urlparse(target).hostname
     # print(title)
-    title = title.split(" – Balanced News Summary")[0]
-    # print(title)
     search_urls = []
     source_sites = []
-    # LP     
-    # for result in results:
-    # set up the date filter
-    now = datetime.now()
-    timeframe = now - timedelta(days=7)
-    timeframe_str = timeframe.strftime("%Y-%m-%d")
-    end_date = datetime.today()
-    start_date = end_date - timedelta(days=7)
+    if title != ""
+        title = title.split(" – Balanced News Summary")[0]
+        # print(title)
+        
+        # LP     
+        # for result in results:
+        # set up the date filter
+        now = datetime.now()
+        timeframe = now - timedelta(days=7)
+        timeframe_str = timeframe.strftime("%Y-%m-%d")
+        end_date = datetime.today()
+        start_date = end_date - timedelta(days=7)
 
-    # search for articles published in the last week using DuckDuckGo
-    
-    results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
-    # set up the date filter for the last 7 days
-    end_date = datetime.today()
-    start_date = end_date - timedelta(days=7)
-    # filter the results by date
-    filtered_results = []
-    for result in results:
-        try:
-            # extract the publication date from the URL using a regular expression
-            date_str = re.search(r'\d{4}/\d{2}/\d{2}', result.href).group()
-            result_date = datetime.strptime(date_str, '%Y/%m/%d')
+        # search for articles published in the last week using DuckDuckGo
 
-            # add the result to the filtered list if its date is within the date range
-            if start_date <= result_date <= end_date:
+        results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
+        # set up the date filter for the last 7 days
+        end_date = datetime.today()
+        start_date = end_date - timedelta(days=7)
+        # filter the results by date
+        filtered_results = []
+        for result in results:
+            try:
+                # extract the publication date from the URL using a regular expression
+                date_str = re.search(r'\d{4}/\d{2}/\d{2}', result.href).group()
+                result_date = datetime.strptime(date_str, '%Y/%m/%d')
+
+                # add the result to the filtered list if its date is within the date range
+                if start_date <= result_date <= end_date:
+                    filtered_results.append(result)
+            except (AttributeError, ValueError):
                 filtered_results.append(result)
-        except (AttributeError, ValueError):
-            filtered_results.append(result)
-            pass  
+                pass  
 
 
-    for result in filtered_results:
-        if any(x in result["href"] for x in match):
-        #if "https://balancednewssummary.com/" not in result["href"]:
-            source_sites.append(result["title"])
-            search_urls.append(result["href"])
-            print("result")
-            print(result)
-    # for i in search(title, tld = "com", num = 10, start = 1, stop = 6):
-    #     if "youtube" not in i and domain not in i:
-    #         source_sites.append(urlparse(i).hostname)
-    #         search_urls.append(i)
+        for result in filtered_results:
+            if any(x in result["href"] for x in match):
+            #if "https://balancednewssummary.com/" not in result["href"]:
+                source_sites.append(result["title"])
+                search_urls.append(result["href"])
+                print("result")
+                print(result)
+        # for i in search(title, tld = "com", num = 10, start = 1, stop = 6):
+        #     if "youtube" not in i and domain not in i:
+        #         source_sites.append(urlparse(i).hostname)
+        #         search_urls.append(i)
     return search_urls, source_sites
 
 def similarity(url_list, article):
@@ -152,6 +154,9 @@ def similarity(url_list, article):
     for i in url_list:
         try: 
             test_article, test_title = extractor(i)
+            print("similarity")
+            print(test_article)
+            print(test_title)
             test_article = [test_article]
             sim_transform2 = sim_tfv.transform(test_article[0])
             score = cosine_similarity(sim_transform1, sim_transform2)
@@ -192,10 +197,10 @@ def handlelink(article_link):
     job_vec = joblib.load('models/tfv.pkl')
     url = (article_link)
     article, article_title = extractor(article_link)
-    # print("_------------")
-    # print(article_link)
-    # print(article)
-    # print(article_title)
+    print("handlelink")
+    print(article_link)
+    print(article)
+    print(article_title)
     pred = job_pac.predict(job_vec.transform(article))
     return pred, article_title, article, url
 
@@ -208,18 +213,24 @@ def similarNews(url):
     Returns:
         dictionary: Dictionary containing all the similar news articles and their similarity score
     """
-    prediction, article_title, article, url = handlelink(article_link=url)
-    url_list, article_titles = duckduckgo_search(article_title)
-    # similarity_score, avgScore = similarity(url_list, article)
-    similarity_score, article_titles_new = similarity(url_list, article)
-    dictionary = dict(zip(url_list, similarity_score))
-    url_title_dict = dict(zip(url_list, article_titles_new))
-    
-    sorted_d = dict( sorted(dictionary.items(), key=lambda item:item[1],reverse=True))
-    for key in sorted_d.keys():
-        for index, row in df.iterrows():
-            if row[0] in key:
-                sorted_d[key] = row[1]
+    print("similarNews")
+    print(url)
+    sorted_d = dict()
+    try:
+        prediction, article_title, article, url = handlelink(article_link=url)
+        url_list, article_titles = duckduckgo_search(article_title)
+        # similarity_score, avgScore = similarity(url_list, article)
+        similarity_score, article_titles_new = similarity(url_list, article)
+        dictionary = dict(zip(url_list, similarity_score))
+        url_title_dict = dict(zip(url_list, article_titles_new))
+
+        sorted_d = dict( sorted(dictionary.items(), key=lambda item:item[1],reverse=True))
+        for key in sorted_d.keys():
+            for index, row in df.iterrows():
+                if row[0] in key:
+                    sorted_d[key] = row[1]
+    except:
+        pass
 
     l=[]
     c=[]
