@@ -106,6 +106,7 @@ def duckduckgo_search(title):
         start_date = end_date - timedelta(days=7)
         # filter the results by date
         filtered_results = []
+        print("results", results)
         for result in results:
             try:
                 # extract the publication date from the URL using a regular expression
@@ -119,7 +120,7 @@ def duckduckgo_search(title):
                 filtered_results.append(result)
                 pass  
 
-
+        print("filtered_results", filtered_results)
         for result in filtered_results:
             if any(x in result["href"] for x in match):
             #if "https://balancednewssummary.com/" not in result["href"]:
