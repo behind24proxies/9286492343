@@ -101,7 +101,7 @@ def duckduckgo_search(title):
 
         # search for articles published in the last week using DuckDuckGo
         keywords = title
-        results = ddgs.news(keywords, region='wt-wt', safesearch='Moderate', time='w')
+        results = ddgs.news(keywords, region='wt-wt', safesearch='Moderate', timelimit='w')
         # set up the date filter for the last 7 days
         end_date = datetime.today()
         start_date = end_date - timedelta(days=7)
