@@ -6,7 +6,7 @@ from newspaper import Article
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.model_selection import train_test_split
-from duckduckgo_search import ddg
+from duckduckgo_search import DDGS
 # lp
 from datetime import datetime, timedelta
 import joblib
@@ -22,6 +22,7 @@ df = pd.read_excel("output.xls", header=None)
 
 match = df[0].to_list()
 
+ddgs = DDGS()
 
 def take(n, iterable):
     "Return first n items of the iterable as a list"
@@ -99,8 +100,8 @@ def duckduckgo_search(title):
         start_date = end_date - timedelta(days=7)
 
         # search for articles published in the last week using DuckDuckGo
-
-        results = ddg(title, region='wt-wt', safesearch='Moderate', time='w', max_results=10)
+        keywords = title
+        results = ddgs.news(keywords, region='wt-wt', safesearch='Moderate', time='w')
         # set up the date filter for the last 7 days
         end_date = datetime.today()
         start_date = end_date - timedelta(days=7)
@@ -110,7 +111,8 @@ def duckduckgo_search(title):
         for result in results:
             try:
                 # extract the publication date from the URL using a regular expression
-                date_str = re.search(r'\d{4}/\d{2}/\d{2}', result.href).group()
+                # date_str = re.search(r'\d{4}/\d{2}/\d{2}', result.url).group()
+                date_str = result['date']
                 result_date = datetime.strptime(date_str, '%Y/%m/%d')
 
                 # add the result to the filtered list if its date is within the date range
@@ -122,10 +124,10 @@ def duckduckgo_search(title):
 
         print("filtered_results", filtered_results)
         for result in filtered_results:
-            if any(x in result["href"] for x in match):
+            if any(x in result["url"] for x in match):
             #if "https://balancednewssummary.com/" not in result["href"]:
-                source_sites.append(result["title"])
-                search_urls.append(result["href"])
+                source_sites.append(result["source"])
+                search_urls.append(result["url"])
                 print("result")
                 print(result)
         # for i in search(title, tld = "com", num = 10, start = 1, stop = 6):
