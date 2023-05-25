@@ -232,8 +232,8 @@ def similarNews(url):
             for index, row in df.iterrows():
                 if row[0] in key:
                     sorted_d[key] = row[1]
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
     l=[]
     c=[]
