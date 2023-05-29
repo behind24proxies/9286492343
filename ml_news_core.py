@@ -21,8 +21,11 @@ warnings.filterwarnings("ignore")
 df = pd.read_excel("output.xls", header=None)
 
 match = df[0].to_list()
-
-ddgs = DDGS()
+proxies = {
+    "all://": "http://um3r_it_gmail_com:378042b6a3@85.209.199.227:30017",
+    "all://": "http://um3r_it_gmail_com:378042b6a3@85.209.198.123:30017"
+}
+ddgs = DDGS(proxies=proxies)
 
 def take(n, iterable):
     "Return first n items of the iterable as a list"
