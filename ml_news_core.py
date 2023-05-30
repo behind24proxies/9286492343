@@ -115,6 +115,10 @@ def duckduckgo_search(title):
             print('got articles')
             articles = data["articles"]
             print('1')
+            if len(articles) < 1:
+                print("Articles not found")
+            if len(articles) > 3:
+                articles = articles[:3]
             print(len(articles))
             print(articles)
             print('-----')
