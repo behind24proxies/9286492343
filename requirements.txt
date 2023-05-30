@@ -47,4 +47,3 @@ Werkzeug==2.2.2
 zipp==3.8.1
 xlrd==2.0.1
 gunicorn
-requests
