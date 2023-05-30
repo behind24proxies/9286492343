@@ -1,8 +1,8 @@
 import warnings
 import re
 from newspaper import Article
-
-
+import random
+import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.model_selection import train_test_split
@@ -89,8 +89,27 @@ def duckduckgo_search(title):
     # print(title)
     search_urls = []
     source_sites = []
+    api_keys = ["10a8210e085717c22dd42c1dc0a255e7"]
     if title != "":
         title = title.split(" – Balanced News Summary")[0]
+        url = f"https://gnews.io/api/v4/search?q=example&lang=en&country=us&max=10&apikey={random.choice(api_keys)}&q={title}"
+
+        response = requests.get(url)
+        data = response.json()
+
+        if "articles" in data:
+            articles = data["articles"]
+            for article in articles:
+                article_url = article["url"]
+                source_name = article["source"]["name"]
+                print("Article URL:", article_url)
+                print("Source Name:", source_name)
+                print()
+                search_urls.append(article_url)
+                source_sites.append(source_name)
+
+        # search_urls = ['https://www.al-monitor.com/originals/2023/05/gulf-space-sector-attracts-private-companies-including-bezos-blue-origin']
+        # source_sites = ['Al-Monitor']
         # print(title)
         
         # LP     
@@ -137,8 +156,8 @@ def duckduckgo_search(title):
         # #     if "youtube" not in i and domain not in i:
         # #         source_sites.append(urlparse(i).hostname)
         # #         search_urls.append(i)
-    search_urls = ['https://www.al-monitor.com/originals/2023/05/gulf-space-sector-attracts-private-companies-including-bezos-blue-origin']
-    source_sites = ['Al-Monitor']
+    # my_query = 'andrew tate'
+
     return search_urls, source_sites
 
 def similarity(url_list, article):
