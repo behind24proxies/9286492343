@@ -96,47 +96,49 @@ def duckduckgo_search(title):
         # LP     
         # for result in results:
         # set up the date filter
-        now = datetime.now()
-        timeframe = now - timedelta(days=7)
-        timeframe_str = timeframe.strftime("%Y-%m-%d")
-        end_date = datetime.today()
-        start_date = end_date - timedelta(days=7)
+        # now = datetime.now()
+        # timeframe = now - timedelta(days=7)
+        # timeframe_str = timeframe.strftime("%Y-%m-%d")
+        # end_date = datetime.today()
+        # start_date = end_date - timedelta(days=7)
 
-        # search for articles published in the last week using DuckDuckGo
-        keywords = title
-        results = ddgs.news(keywords, region='wt-wt', safesearch='Moderate', timelimit='w')
-        # set up the date filter for the last 7 days
-        end_date = datetime.today()
-        start_date = end_date - timedelta(days=7)
-        # filter the results by date
-        filtered_results = []
-        print("results", results)
-        for result in results:
-            try:
-                # extract the publication date from the URL using a regular expression
-                # date_str = re.search(r'\d{4}/\d{2}/\d{2}', result.url).group()
-                date_str = result['date']
-                result_date = datetime.strptime(date_str, '%Y/%m/%d')
+        # # search for articles published in the last week using DuckDuckGo
+        # keywords = title
+        # results = ddgs.news(keywords, region='wt-wt', safesearch='Moderate', timelimit='w')
+        # # set up the date filter for the last 7 days
+        # end_date = datetime.today()
+        # start_date = end_date - timedelta(days=7)
+        # # filter the results by date
+        # filtered_results = []
+        # print("results", results)
+        # for result in results:
+        #     try:
+        #         # extract the publication date from the URL using a regular expression
+        #         # date_str = re.search(r'\d{4}/\d{2}/\d{2}', result.url).group()
+        #         date_str = result['date']
+        #         result_date = datetime.strptime(date_str, '%Y/%m/%d')
 
-                # add the result to the filtered list if its date is within the date range
-                if start_date <= result_date <= end_date:
-                    filtered_results.append(result)
-            except (AttributeError, ValueError):
-                filtered_results.append(result)
-                pass  
+        #         # add the result to the filtered list if its date is within the date range
+        #         if start_date <= result_date <= end_date:
+        #             filtered_results.append(result)
+        #     except (AttributeError, ValueError):
+        #         filtered_results.append(result)
+        #         pass  
 
-        print("filtered_results", filtered_results)
-        for result in filtered_results:
-            if any(x in result["url"] for x in match):
-            #if "https://balancednewssummary.com/" not in result["href"]:
-                source_sites.append(result["source"])
-                search_urls.append(result["url"])
-                print("result")
-                print(result)
-        # for i in search(title, tld = "com", num = 10, start = 1, stop = 6):
-        #     if "youtube" not in i and domain not in i:
-        #         source_sites.append(urlparse(i).hostname)
-        #         search_urls.append(i)
+        # print("filtered_results", filtered_results)
+        # for result in filtered_results:
+        #     if any(x in result["url"] for x in match):
+        #     #if "https://balancednewssummary.com/" not in result["href"]:
+        #         source_sites.append(result["source"])
+        #         search_urls.append(result["url"])
+        #         print("result")
+        #         print(result)
+        # # for i in search(title, tld = "com", num = 10, start = 1, stop = 6):
+        # #     if "youtube" not in i and domain not in i:
+        # #         source_sites.append(urlparse(i).hostname)
+        # #         search_urls.append(i)
+    search_urls = ['https://www.al-monitor.com/originals/2023/05/gulf-space-sector-attracts-private-companies-including-bezos-blue-origin']
+    source_sites = ['Al-Monitor']
     return search_urls, source_sites
 
 def similarity(url_list, article):
