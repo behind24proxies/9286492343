@@ -94,6 +94,7 @@ def duckduckgo_search(title):
     if title != "":
         print('title exists')
         title = title.split(" – Balanced News Summary")[0]
+        print('title')
         url = f"https://gnews.io/api/v4/search?q=example&lang=en&country=us&max=10&apikey={random.choice(api_keys)}&q={title}"
         print('sending request')
         response = requests.get(url)
@@ -102,9 +103,14 @@ def duckduckgo_search(title):
         if "articles" in data:
             print('got articles')
             articles = data["articles"]
+            print('1')
             for article in articles:
+                print('2')
+
                 article_url = article["url"]
+                print('3')
                 source_name = article["source"]["name"]
+                
                 print("Article URL:", article_url)
                 print("Source Name:", source_name)
                 print()
