@@ -108,7 +108,7 @@ def duckduckgo_search(title):
         url = f"https://gnews.io/api/v4/search?q=example&lang=en&country=us&max=10&apikey={random.choice(api_keys)}&q={title}"
         print('sending request')
         response = requests.get(url)
-        print(response.data)
+        print(response.text)
         data = response.json()
         print('fetching articles')
         if "articles" in data:
