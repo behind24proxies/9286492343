@@ -10,6 +10,7 @@ from duckduckgo_search import DDGS
 # lp
 from datetime import datetime, timedelta
 import joblib
+import re
 from googlesearch import search
 from urllib.parse import urlparse
 import operator
@@ -31,6 +32,11 @@ def take(n, iterable):
     "Return first n items of the iterable as a list"
     return list(islice(iterable, n))
     
+def remove_symbols(text):
+    # Remove symbols that are not ASCII letters or numbers
+    cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
+    return cleaned_text
+
 def extractor(url):
     """
     Extractor function that gets the article body from the URL
@@ -94,10 +100,15 @@ def duckduckgo_search(title):
     if title != "":
         print('title exists')
         title = title.split(" – Balanced News Summary")[0]
+        title = remove_symbols(title)
+
         print(title)
+        
+        
         url = f"https://gnews.io/api/v4/search?q=example&lang=en&country=us&max=10&apikey={random.choice(api_keys)}&q={title}"
         print('sending request')
         response = requests.get(url)
+        print(response.data)
         data = response.json()
         print('fetching articles')
         if "articles" in data:
