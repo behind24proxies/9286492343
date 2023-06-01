@@ -1,6 +1,6 @@
 
 from flask import Flask, jsonify, request, Response
-from ml_news_core import similarNews
+from ml_news_core import google_news_search
 import json
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -13,6 +13,8 @@ def api():
     args = request.args
     attempts = 0
     if "url" in args:
+        results = google_news_search.search(args["url"])
+        return jsonify(results)
         while attempts < 5:
             try:
                 # print(args["url"])
