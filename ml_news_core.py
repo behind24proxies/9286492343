@@ -16,20 +16,18 @@ def remove_symbols(text):
     cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
     return cleaned_text
 
-print(remove_symbols('https://balancednewssummary.com/tina-turner-dies-at-83/'))
+from datetime import datetime, timedelta
+
+def format_current_time_minus_7_days():
+    current_time = datetime.now()
+    modified_time = current_time - timedelta(days=7)
+    formatted_time = modified_time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    return formatted_time
+
 def google_news_search(title):
     """
-    Function to perform a Google Search with the specified title and URL
-    Args:
-        title: Title of the Article
-        url: URL of the specified article
-    Returns:
-        search_urls: Similar News Articles found over the Web
-        source_sites: Hostname of the Articles founder over the Web
+    Function to perform a Google News Search 
     """
-    # target = url
-    # domain = urlparse(target).hostname
-    # print(title)
     search_urls = []
     source_sites = []
     api_keys = ["10a8210e085717c22dd42c1dc0a255e7"]
@@ -38,11 +36,9 @@ def google_news_search(title):
         print('title exists')
         title = title.split(" – Balanced News Summary")[0]
         title = remove_symbols(title)
-
         print(title)
-        
-        
-        url = f"https://gnews.io/api/v4/search?q=example&lang=en&country=us&max=10&apikey={random.choice(api_keys)}&q={title}"
+        seven_days_ago = format_current_time_minus_7_days()
+        url = f"https://gnews.io/api/v4/search?q=example&lang=en&country=us&max=10&apikey={random.choice(api_keys)}&q={title}&from={seven_days_ago}"
         print('sending request')
         response = requests.get(url)
         print(response.text)
@@ -50,23 +46,14 @@ def google_news_search(title):
         returner = []
         print('fetching articles')
         if "articles" in data:
-            print('got articles')
             articles = data["articles"]
-            print('1')
             if len(articles) < 1:
                 print("Articles not found")
             if len(articles) > 6:
                 articles = articles[:6]
-            print(len(articles))
-            print(articles)
-            print('-----')
             for article in articles:
-                print('2')
-
                 article_url = article["url"]
-                print('3')
                 source_name = article["source"]["name"]
-                
                 print("Article URL:", article_url)
                 print("Source Name:", source_name)
                 print()
